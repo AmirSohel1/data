@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Domain Class Diagram & Modular DDD Architecture - AeroBook Technical Presentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+    @page {
+      size: 297mm 210mm landscape;
+      margin: 8mm 10mm;
+      @bottom-right {
+        content: "AeroBook Presentation Deck • Slide 3 of 7 • Domain-Driven Design";
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #070d1e;
+      color: #f8fafc;
+      margin: 0;
+      padding: 10px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .slide-box {
+      width: 100%;
+      height: 194mm;
+      background: radial-gradient(circle at 10% 10%, #172554 0%, #09122a 50%, #030712 100%);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 12px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1.5px solid rgba(255, 255, 255, 0.12);
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+    }
+    .badge-pill {
+      font-size: 7.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+    .slide-h1 {
+      font-size: 17pt;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 4px 0 2px 0;
+      letter-spacing: -0.3px;
+      background: linear-gradient(to right, #ffffff, #e2e8f0, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .slide-sub {
+      font-size: 8.5pt;
+      color: #94a3b8;
+      margin: 0;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13pt;
+      font-weight: 800;
+      color: #38bdf8;
+    }
+    .brand-plane {
+      background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 13px;
+    }
+    .svg-stage {
+      flex-grow: 1;
+      height: 140mm;
+      max-height: 140mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(11, 19, 43, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 10px;
+      padding: 6px;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+    .speaker-drawer {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 8px;
+      padding: 6px 12px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .speaker-tag {
+      font-size: 7pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #f59e0b;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .speaker-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 7.5pt;
+      color: #e2e8f0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .speaker-list li::before {
+      content: "▸";
+      color: #38bdf8;
+      font-weight: bold;
+      margin-right: 4px;
+    }
+    .nav-bar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      padding: 8px 16px;
+      border-radius: 30px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .nav-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 8pt;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    @media print { .nav-bar { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="slide-box">
+    <div class="header-bar">
+      <div>
+        <div class="badge-pill">Slide 3 of 7 • Domain-Driven Design</div>
+        <h1 class="slide-h1">Domain Class Diagram & Modular DDD Architecture</h1>
+        <p class="slide-sub">Domain Entities, Value Objects, Structural Relationships & Typed Lifecycle Enumerations</p>
+      </div>
+      <div class="brand-logo">
+        <div class="brand-plane">✈</div>
+        <span>AeroBook</span>
+      </div>
+    </div>
+
+    <div class="svg-stage">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 520" width="100%" height="100%">
+    <defs>
+      <linearGradient id="cdBg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#070d1e"/><stop offset="100%" stop-color="#0b1736"/>
+      </linearGradient>
+    </defs>
+    <rect width="1160" height="520" rx="12" fill="url(#cdBg)"/>
+
+    <!-- TITLE HEADER -->
+    <text x="580" y="28" fill="#38bdf8" font-size="12" font-weight="800" letter-spacing="1.5" text-anchor="middle" font-family="Inter, sans-serif">
+      AEROBOOK DOMAIN ENTITY ARCHITECTURE &amp; CLASS DIAGRAM
+    </text>
+
+    <!-- ROW 1: 4 CORE ENTITY MODULES -->
+    <!-- Class 1: Flight -->
+    <g transform="translate(30, 45)">
+      <rect width="255" height="155" rx="6" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+      <rect width="255" height="26" rx="6" fill="#1e3a8a"/>
+      <text x="127" y="18" fill="#ffffff" font-size="10.5" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">Flight &lt;&lt;Entity&gt;&gt;</text>
+      <g transform="translate(10, 34)">
+        <text x="0" y="12" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long id [PK]</text>
+        <text x="0" y="24" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String flightNumber [UK]</text>
+        <text x="0" y="36" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String source / destination</text>
+        <text x="0" y="48" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Integer totalSeats / availableSeats</text>
+        <text x="0" y="60" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- FlightStatus status</text>
+        <line x1="0" y1="66" x2="235" y2="66" stroke="#334155"/>
+        <text x="0" y="80" fill="#93c5fd" font-size="8" font-family="JetBrains Mono, monospace">+ reserveSeats(int count): boolean</text>
+        <text x="0" y="92" fill="#93c5fd" font-size="8" font-family="JetBrains Mono, monospace">+ releaseSeats(int count): void</text>
+        <text x="0" y="104" fill="#93c5fd" font-size="8" font-family="JetBrains Mono, monospace">+ isBookingOpen(): boolean</text>
+      </g>
+    </g>
+
+    <!-- Class 2: Booking -->
+    <g transform="translate(315, 45)">
+      <rect width="255" height="155" rx="6" fill="#0f172a" stroke="#8b5cf6" stroke-width="1.5"/>
+      <rect width="255" height="26" rx="6" fill="#4c1d95"/>
+      <text x="127" y="18" fill="#ffffff" font-size="10.5" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">Booking &lt;&lt;Entity&gt;&gt;</text>
+      <g transform="translate(10, 34)">
+        <text x="0" y="12" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long bookingId [PK]</text>
+        <text x="0" y="24" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String pnr [UK, 6-Char]</text>
+        <text x="0" y="36" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long userId / flightId</text>
+        <text x="0" y="48" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- BigDecimal totalFare</text>
+        <text x="0" y="60" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- BookingStatus status</text>
+        <line x1="0" y1="66" x2="235" y2="66" stroke="#334155"/>
+        <text x="0" y="80" fill="#c4b5fd" font-size="8" font-family="JetBrains Mono, monospace">+ addPassenger(Passenger p): void</text>
+        <text x="0" y="92" fill="#c4b5fd" font-size="8" font-family="JetBrains Mono, monospace">+ confirmReservation(): void</text>
+        <text x="0" y="104" fill="#c4b5fd" font-size="8" font-family="JetBrains Mono, monospace">+ cancelBooking(): void</text>
+      </g>
+    </g>
+
+    <!-- Class 3: Passenger -->
+    <g transform="translate(600, 45)">
+      <rect width="245" height="155" rx="6" fill="#0f172a" stroke="#8b5cf6" stroke-width="1.5"/>
+      <rect width="245" height="26" rx="6" fill="#4c1d95"/>
+      <text x="122" y="18" fill="#ffffff" font-size="10.5" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">Passenger &lt;&lt;Entity&gt;&gt;</text>
+      <g transform="translate(10, 34)">
+        <text x="0" y="12" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long passengerId [PK]</text>
+        <text x="0" y="24" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long bookingId [FK]</text>
+        <text x="0" y="36" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String firstName / lastName</text>
+        <text x="0" y="48" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String gender / Integer age</text>
+        <text x="0" y="60" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String seatNumber (e.g. 14B)</text>
+        <line x1="0" y1="66" x2="225" y2="66" stroke="#334155"/>
+        <text x="0" y="80" fill="#c4b5fd" font-size="8" font-family="JetBrains Mono, monospace">+ assignSeat(String seat): void</text>
+        <text x="0" y="92" fill="#c4b5fd" font-size="8" font-family="JetBrains Mono, monospace">+ getFullName(): String</text>
+        <text x="0" y="104" fill="#c4b5fd" font-size="8" font-family="JetBrains Mono, monospace">+ validatePassport(): boolean</text>
+      </g>
+    </g>
+
+    <!-- Class 4: PaymentRecord -->
+    <g transform="translate(875, 45)">
+      <rect width="255" height="155" rx="6" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+      <rect width="255" height="26" rx="6" fill="#78350f"/>
+      <text x="127" y="18" fill="#ffffff" font-size="10.5" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">PaymentRecord &lt;&lt;Entity&gt;&gt;</text>
+      <g transform="translate(10, 34)">
+        <text x="0" y="12" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long id [PK]</text>
+        <text x="0" y="24" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long bookingId / String pnr</text>
+        <text x="0" y="36" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String orderId [Razorpay UK]</text>
+        <text x="0" y="48" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long amountInPaise / status</text>
+        <text x="0" y="60" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String signature (HMAC-SHA256)</text>
+        <line x1="0" y1="66" x2="235" y2="66" stroke="#334155"/>
+        <text x="0" y="80" fill="#fde68a" font-size="8" font-family="JetBrains Mono, monospace">+ verifySignature(secret): boolean</text>
+        <text x="0" y="92" fill="#fde68a" font-size="8" font-family="JetBrains Mono, monospace">+ capturePayment(): void</text>
+        <text x="0" y="104" fill="#fde68a" font-size="8" font-family="JetBrains Mono, monospace">+ executeRefund(): void</text>
+      </g>
+    </g>
+
+    <!-- ROW 2: SUPPORTING DOMAIN ENTITIES & CHECK-IN -->
+    <!-- Class 5: Aircraft & Fare -->
+    <g transform="translate(30, 220)">
+      <rect width="255" height="155" rx="6" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+      <rect width="255" height="26" rx="6" fill="#1e3a8a"/>
+      <text x="127" y="18" fill="#ffffff" font-size="10.5" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">Aircraft &amp; Fleet &lt;&lt;Entity&gt;&gt;</text>
+      <g transform="translate(10, 34)">
+        <text x="0" y="12" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long id [PK]</text>
+        <text x="0" y="24" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String aircraftCode (VT-EXA)</text>
+        <text x="0" y="36" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String model (Airbus A320)</text>
+        <text x="0" y="48" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Integer capacity (180 seats)</text>
+        <text x="0" y="60" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- AircraftStatus status</text>
+        <line x1="0" y1="66" x2="235" y2="66" stroke="#334155"/>
+        <text x="0" y="80" fill="#93c5fd" font-size="8" font-family="JetBrains Mono, monospace">+ setMaintenance(): void</text>
+        <text x="0" y="92" fill="#93c5fd" font-size="8" font-family="JetBrains Mono, monospace">+ isFlightReady(): boolean</text>
+      </g>
+    </g>
+
+    <!-- Class 6: CheckIn -->
+    <g transform="translate(315, 220)">
+      <rect width="255" height="155" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+      <rect width="255" height="26" rx="6" fill="#065f46"/>
+      <text x="127" y="18" fill="#ffffff" font-size="10.5" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">CheckIn &lt;&lt;Entity&gt;&gt;</text>
+      <g transform="translate(10, 34)">
+        <text x="0" y="12" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long id [PK]</text>
+        <text x="0" y="24" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long bookingId</text>
+        <text x="0" y="36" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String passengerName</text>
+        <text x="0" y="48" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String seatNumber (14B)</text>
+        <text x="0" y="60" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String boardingPassNumber</text>
+        <line x1="0" y1="66" x2="235" y2="66" stroke="#334155"/>
+        <text x="0" y="80" fill="#a7f3d0" font-size="8" font-family="JetBrains Mono, monospace">+ issueBoardingPass(): String</text>
+        <text x="0" y="92" fill="#a7f3d0" font-size="8" font-family="JetBrains Mono, monospace">+ verifyGateEntry(): boolean</text>
+        <text x="0" y="104" fill="#a7f3d0" font-size="8" font-family="JetBrains Mono, monospace">+ markBoarded(): void</text>
+      </g>
+    </g>
+
+    <!-- Class 7: UserEntity & Incident -->
+    <g transform="translate(600, 220)">
+      <rect width="245" height="155" rx="6" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+      <rect width="245" height="26" rx="6" fill="#1e3a8a"/>
+      <text x="122" y="18" fill="#ffffff" font-size="10.5" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">UserEntity &lt;&lt;Entity&gt;&gt;</text>
+      <g transform="translate(10, 34)">
+        <text x="0" y="12" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long userId [PK]</text>
+        <text x="0" y="24" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String email [UK] / phone</text>
+        <text x="0" y="36" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String firstName / lastName</text>
+        <text x="0" y="48" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- LocalDate dateOfBirth</text>
+        <text x="0" y="60" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Role role (USER/STAFF/ADMIN)</text>
+        <line x1="0" y1="66" x2="225" y2="66" stroke="#334155"/>
+        <text x="0" y="80" fill="#93c5fd" font-size="8" font-family="JetBrains Mono, monospace">+ updateProfile(): void</text>
+        <text x="0" y="92" fill="#93c5fd" font-size="8" font-family="JetBrains Mono, monospace">+ hasAdminAuthority(): boolean</text>
+      </g>
+    </g>
+
+    <!-- Class 8: Notification -->
+    <g transform="translate(875, 220)">
+      <rect width="255" height="155" rx="6" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+      <rect width="255" height="26" rx="6" fill="#78350f"/>
+      <text x="127" y="18" fill="#ffffff" font-size="10.5" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">Notification &lt;&lt;Entity&gt;&gt;</text>
+      <g transform="translate(10, 34)">
+        <text x="0" y="12" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long id [PK]</text>
+        <text x="0" y="24" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- Long userId / recipientEmail</text>
+        <text x="0" y="36" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- String title / message</text>
+        <text x="0" y="48" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- NotificationType type</text>
+        <text x="0" y="60" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">- NotificationStatus status</text>
+        <line x1="0" y1="66" x2="235" y2="66" stroke="#334155"/>
+        <text x="0" y="80" fill="#fde68a" font-size="8" font-family="JetBrains Mono, monospace">+ dispatchMimeMail(): void</text>
+        <text x="0" y="92" fill="#fde68a" font-size="8" font-family="JetBrains Mono, monospace">+ attachPdf(byte[] pdf): void</text>
+      </g>
+    </g>
+
+    <!-- ROW 3: TYPED ENUMERATIONS -->
+    <g transform="translate(30, 395)">
+      <rect width="1100" height="105" rx="6" fill="#0f172a" stroke="#334155"/>
+      <rect width="1100" height="22" rx="6" fill="#1e293b"/>
+      <text x="550" y="16" fill="#38bdf8" font-size="9.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">DOMAIN ENUMERATIONS &amp; STATE MACHINES</text>
+
+      <g transform="translate(20, 32)">
+        <text x="0" y="12" fill="#93c5fd" font-size="8.5" font-weight="700" font-family="Inter, sans-serif">Role:</text>
+        <text x="0" y="28" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">ROLE_USER</text>
+        <text x="0" y="42" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">ROLE_STAFF</text>
+        <text x="0" y="56" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">ROLE_ADMIN</text>
+      </g>
+      <g transform="translate(180, 32)">
+        <text x="0" y="12" fill="#a7f3d0" font-size="8.5" font-weight="700" font-family="Inter, sans-serif">FlightStatus:</text>
+        <text x="0" y="28" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">SCHEDULED, ON_TIME</text>
+        <text x="0" y="42" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">DELAYED, BOARDING</text>
+        <text x="0" y="56" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">DEPARTED, CANCELLED</text>
+      </g>
+      <g transform="translate(390, 32)">
+        <text x="0" y="12" fill="#c4b5fd" font-size="8.5" font-weight="700" font-family="Inter, sans-serif">BookingStatus:</text>
+        <text x="0" y="28" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">CONFIRMED</text>
+        <text x="0" y="42" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">CANCELLED</text>
+        <text x="0" y="56" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">PENDING</text>
+      </g>
+      <g transform="translate(580, 32)">
+        <text x="0" y="12" fill="#fde68a" font-size="8.5" font-weight="700" font-family="Inter, sans-serif">PaymentStatus:</text>
+        <text x="0" y="28" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">CREATED, AUTHORIZED</text>
+        <text x="0" y="42" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">CAPTURED, REFUNDED</text>
+        <text x="0" y="56" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">FAILED</text>
+      </g>
+      <g transform="translate(790, 32)">
+        <text x="0" y="12" fill="#fbcfe8" font-size="8.5" font-weight="700" font-family="Inter, sans-serif">IncidentSeverity &amp; Status:</text>
+        <text x="0" y="28" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">LOW, MEDIUM, HIGH, CRITICAL</text>
+        <text x="0" y="42" fill="#cbd5e1" font-size="8" font-family="JetBrains Mono, monospace">OPEN, INVESTIGATING, RESOLVED</text>
+      </g>
+    </g>
+  </svg>
+    </div>
+
+    <div class="speaker-drawer">
+      <div class="speaker-tag">Speaker Talking Points</div>
+      <ul class="speaker-list">
+        <li>Domain Separation: Authentication credentials (Credential) are decoupled from user demographics (UserEntity).</li><li>Immutable Audit Keys: PNR (Passenger Name Record), boarding pass codes (BP-*), and Razorpay order IDs are unique across services.</li><li>Lifecycle Enums: State machines are strictly governed via typed enums (FlightStatus, BookingStatus, PaymentStatus, IncidentStatus).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" onclick="window.print()">🖨️ Print to PDF</button>
+    <button class="nav-btn" onclick="document.documentElement.requestFullscreen()">⛶ Fullscreen</button>
+  </div>
+</body>
+</html>

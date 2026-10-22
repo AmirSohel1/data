@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AeroBook — Use Case Diagram</title>
+<style>
+:root{color-scheme:dark;--bg:#070b14;--panel:#101827;--line:#2a3a50;--text:#f3f6fc;--muted:#9baac0;--cyan:#55d6ff;--green:#6ee7b7;--orange:#ffc078;--purple:#b69cff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#13223a 0%,var(--bg) 52%);color:var(--text);font:14px/1.45 Inter,Segoe UI,Arial,sans-serif}
+header{max-width:1500px;margin:auto;padding:30px 26px 18px;display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
+.kicker{color:var(--cyan);font-weight:800;letter-spacing:.2em;font-size:12px}h1{margin:5px 0;font-size:clamp(24px,3vw,38px);letter-spacing:-.04em}p{color:var(--muted);margin:4px 0}
+.controls{display:flex;gap:8px;flex-wrap:wrap}button{border:1px solid #40516b;background:#172337;color:var(--text);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}button:hover{border-color:var(--cyan)}
+main{max-width:1500px;margin:0 auto;padding:0 22px 28px}.boundary{border:1px solid #40516b;background:rgba(16,24,39,.85);border-radius:20px;padding:20px;box-shadow:0 20px 70px #0005}
+.boundary-head{display:flex;justify-content:space-between;align-items:start;gap:15px;flex-wrap:wrap;margin-bottom:20px}.boundary-head h2{font-size:17px;margin:0}.boundary-head span{font-size:12px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:150px 1fr 150px;gap:18px;align-items:stretch}
+.actor-col{display:flex;flex-direction:column;justify-content:space-around;gap:20px}
+.actor{display:flex;align-items:center;flex-direction:column;gap:8px;text-align:center;color:var(--muted);font-size:12px;font-weight:700}
+.person{width:50px;height:75px;position:relative;color:var(--actor)}
+.person:before{content:"";position:absolute;width:15px;height:15px;border:2px solid currentColor;border-radius:50%;left:17px;top:0}
+.person:after{content:"";position:absolute;left:23px;top:18px;height:27px;border-left:2px solid currentColor}
+.person i,.person b{position:absolute;display:block;background:currentColor;height:2px;top:30px;width:24px;left:1px;transform:rotate(-25deg);transform-origin:right}
+.person b{left:25px;transform:rotate(25deg);transform-origin:left}
+.person em,.person strong{position:absolute;display:block;background:currentColor;width:2px;height:26px;top:42px;left:17px;transform:rotate(28deg);transform-origin:top}
+.person strong{left:31px;transform:rotate(-28deg)}
+.actor.guest{--actor:var(--cyan)}.actor.passenger{--actor:var(--green)}.actor.staff{--actor:var(--orange)}.actor.admin{--actor:var(--purple)}
+.usecases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-content:center}
+.group{border:1px solid var(--line);border-radius:15px;padding:12px;background:#0c1422}.group h3{font-size:11px;text-transform:uppercase;letter-spacing:.13em;margin:0 0 10px;color:var(--accent)}
+.uc{border:1px solid color-mix(in srgb,var(--accent) 70%,#233047);background:#121e30;border-radius:50px;min-height:52px;padding:9px 10px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;margin:9px 0;box-shadow:0 4px 14px #0002}
+.group.public{--accent:var(--cyan)}.group.pass{--accent:var(--green)}.group.staffg{--accent:var(--orange)}.group.adminG{--accent:var(--purple)}
+.admin-row{margin-top:16px;border-top:1px solid var(--line);padding-top:16px}.admin-row h3{color:var(--purple);font-size:11px;letter-spacing:.13em;text-transform:uppercase;margin:0 0 10px}.admin-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.admin-actions .uc{margin:0}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:17px 4px 0;color:var(--muted);font-size:12px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+.note{font-size:12px;color:var(--muted);margin:14px 4px 0}
+@media(max-width:1050px){.layout{grid-template-columns:100px 1fr 100px}.usecases{grid-template-columns:1fr}.admin-actions{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.layout{grid-template-columns:1fr}.actor-col{display:grid;grid-template-columns:repeat(2,1fr)}.usecases{grid-template-columns:1fr}.admin-actions{grid-template-columns:1fr}}
+@media print{body{background:#070b14!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.controls{display:none}header{padding-top:10px}.boundary{box-shadow:none;break-inside:avoid}.layout{grid-template-columns:110px 1fr 110px}.usecases{grid-template-columns:repeat(3,minmax(0,1fr))}.uc{font-size:10px;min-height:42px}.group{padding:8px}.actor-col{gap:5px}}
+</style></head><body>
+<header><div><div class="kicker">AEROBOOK · SYSTEM MODEL</div><h1>Use Case Diagram</h1><p>Airline reservation, passenger services, airport operations and administration</p></div><div class="controls"><button onclick="window.print()">Print / Save as PDF</button><button onclick="document.body.classList.toggle('compact')">Toggle compact view</button></div></header>
+<main><section class="boundary"><div class="boundary-head"><div><h2>AeroBook Cloud Airline Platform</h2><span>System boundary · Angular SPA · API Gateway · domain microservices</span></div><span>Actors & capabilities</span></div>
+<div class="layout">
+<div class="actor-col">
+<div class="actor guest"><div class="person"><i></i><b></b><em></em><strong></strong></div>Guest / Visitor</div>
+<div class="actor passenger"><div class="person"><i></i><b></b><em></em><strong></strong></div>Passenger (ROLE_USER)</div>
+</div>
+<div class="usecases">
+<div class="group public"><h3>Public access & identity</h3><div class="uc">Browse and search flights</div><div class="uc">View schedules & seat availability</div><div class="uc">Register / verify email</div><div class="uc">Log in / refresh session</div><div class="uc">Validate promotional coupon</div></div>
+<div class="group pass"><h3>Passenger services</h3><div class="uc">Manage personal profile</div><div class="uc">Select cabin & passengers</div><div class="uc">Create booking & PNR</div><div class="uc">Pay securely via Razorpay</div><div class="uc">Download e-ticket / tax invoice</div><div class="uc">Select seat & web check-in</div><div class="uc">Retrieve boarding pass</div><div class="uc">Cancel own booking</div><div class="uc">View loyalty status & alerts</div></div>
+<div class="group staffg"><h3>Airport ground operations</h3><div class="uc">Search passenger / booking by PNR</div><div class="uc">Process desk check-in</div><div class="uc">Scan & verify boarding pass</div><div class="uc">View passenger manifest</div><div class="uc">Update operational flight status</div><div class="uc">Log passenger incident</div></div>
+</div>
+<div class="actor-col">
+<div class="actor staff"><div class="person"><i></i><b></b><em></em><strong></strong></div>Ground Staff (ROLE_STAFF)</div>
+<div class="actor admin"><div class="person"><i></i><b></b><em></em><strong></strong></div>System Admin (ROLE_ADMIN)</div>
+</div></div>
+<div class="admin-row"><h3>Administrative governance</h3><div class="admin-actions"><div class="uc" style="--accent:var(--purple)">Manage aircraft fleet</div><div class="uc" style="--accent:var(--purple)">Create / schedule flights</div><div class="uc" style="--accent:var(--purple)">Configure fares, taxes & cabin pricing</div><div class="uc" style="--accent:var(--purple)">Manage coupons & campaigns</div><div class="uc" style="--accent:var(--purple)">Manage users & role promotions</div><div class="uc" style="--accent:var(--purple)">Audit credentials & transactions</div><div class="uc" style="--accent:var(--purple)">Resolve passenger incidents</div><div class="uc" style="--accent:var(--purple)">Monitor system/service health</div></div></div>
+<div class="legend"><span><i class="dot" style="background:var(--cyan)"></i>Guest / public</span><span><i class="dot" style="background:var(--green)"></i>Passenger</span><span><i class="dot" style="background:var(--orange)"></i>Ground Staff</span><span><i class="dot" style="background:var(--purple)"></i>Administrator</span></div>
+<p class="note">Use cases reflect the roles and capabilities documented for AeroBook. Infrastructure components such as Eureka, Config Server, RabbitMQ and the API Gateway are internal system components, not human actors.</p>
+</section></main>
+<style>.compact .uc{min-height:35px;padding:6px;font-size:11px;margin:5px 0}.compact .group{padding:8px}.compact .layout{gap:10px}</style>
+</body></html>

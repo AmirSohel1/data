@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Execution & Distributed Data Flow Pipeline (DFD) - AeroBook Technical Presentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+    @page {
+      size: 297mm 210mm landscape;
+      margin: 8mm 10mm;
+      @bottom-right {
+        content: "AeroBook Presentation Deck • Slide 6 of 7 • Data Flow Model (DFD)";
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #070d1e;
+      color: #f8fafc;
+      margin: 0;
+      padding: 10px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .slide-box {
+      width: 100%;
+      height: 194mm;
+      background: radial-gradient(circle at 10% 10%, #172554 0%, #09122a 50%, #030712 100%);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 12px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1.5px solid rgba(255, 255, 255, 0.12);
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+    }
+    .badge-pill {
+      font-size: 7.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+    .slide-h1 {
+      font-size: 17pt;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 4px 0 2px 0;
+      letter-spacing: -0.3px;
+      background: linear-gradient(to right, #ffffff, #e2e8f0, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .slide-sub {
+      font-size: 8.5pt;
+      color: #94a3b8;
+      margin: 0;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13pt;
+      font-weight: 800;
+      color: #38bdf8;
+    }
+    .brand-plane {
+      background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 13px;
+    }
+    .svg-stage {
+      flex-grow: 1;
+      height: 140mm;
+      max-height: 140mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(11, 19, 43, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 10px;
+      padding: 6px;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+    .speaker-drawer {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 8px;
+      padding: 6px 12px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .speaker-tag {
+      font-size: 7pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #f59e0b;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .speaker-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 7.5pt;
+      color: #e2e8f0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .speaker-list li::before {
+      content: "▸";
+      color: #38bdf8;
+      font-weight: bold;
+      margin-right: 4px;
+    }
+    .nav-bar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      padding: 8px 16px;
+      border-radius: 30px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .nav-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 8pt;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    @media print { .nav-bar { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="slide-box">
+    <div class="header-bar">
+      <div>
+        <div class="badge-pill">Slide 6 of 7 • Data Flow Model (DFD)</div>
+        <h1 class="slide-h1">System Execution & Distributed Data Flow Pipeline (DFD)</h1>
+        <p class="slide-sub">Physical Packet Traversal: Netty Ingress, JWT Mutation, Eureka Dynamic RPC, AMQP Bus & DB Transactions</p>
+      </div>
+      <div class="brand-logo">
+        <div class="brand-plane">✈</div>
+        <span>AeroBook</span>
+      </div>
+    </div>
+
+    <div class="svg-stage">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 520" width="100%" height="100%">
+    <defs>
+      <linearGradient id="dfdBg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#070d1e"/><stop offset="100%" stop-color="#0b1736"/>
+      </linearGradient>
+      <marker id="dfdArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/>
+      </marker>
+    </defs>
+    <rect width="1160" height="520" rx="12" fill="url(#dfdBg)"/>
+
+    <text x="580" y="24" fill="#38bdf8" font-size="12" font-weight="800" letter-spacing="1.5" text-anchor="middle" font-family="Inter, sans-serif">
+      AEROBOOK PHYSICAL DATA FLOW &amp; EXECUTION PIPELINE (DFD)
+    </text>
+
+    <!-- 6 PIPELINE STAGES -->
+    <!-- STAGE 1: INGRESS -->
+    <g transform="translate(30, 45)">
+      <rect width="170" height="340" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2"/>
+      <rect width="170" height="26" rx="8" fill="#0284c7"/>
+      <text x="85" y="18" fill="#ffffff" font-size="9" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">1. CLIENT &amp; INGRESS</text>
+      
+      <g transform="translate(10, 38)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#38bdf8" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Angular 18 SPA</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">HTTP Request + Bearer JWT</text>
+      </g>
+      <g transform="translate(10, 98)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#38bdf8" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Netty EventLoop</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Non-blocking TCP socket</text>
+      </g>
+      <g transform="translate(10, 158)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#38bdf8" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">CorsWebFilter</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Validates Origin &amp; Methods</text>
+      </g>
+      <g transform="translate(10, 218)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#38bdf8" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Latency: 15-40ms</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">JSON Payload Serialization</text>
+      </g>
+    </g>
+
+    <!-- ARROW 1 -> 2 -->
+    <path d="M 200 170 L 220 170" stroke="#38bdf8" stroke-width="2" marker-end="url(#dfdArrow)"/>
+
+    <!-- STAGE 2: GATEWAY ENRICHMENT -->
+    <g transform="translate(225, 45)">
+      <rect width="170" height="340" rx="8" fill="#0f172a" stroke="#818cf8" stroke-width="1.2"/>
+      <rect width="170" height="26" rx="8" fill="#4f46e5"/>
+      <text x="85" y="18" fill="#ffffff" font-size="9" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">2. SECURITY &amp; DISPATCH</text>
+
+      <g transform="translate(10, 38)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#818cf8" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">JwtAuthenticationFilter</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Verify HMAC-SHA256 signature</text>
+      </g>
+      <g transform="translate(10, 98)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#818cf8" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Header Mutation</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Inject X-User-Id, X-User-Role</text>
+      </g>
+      <g transform="translate(10, 158)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#818cf8" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Route Predicate Match</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Path(/api/bookings/**)</text>
+      </g>
+      <g transform="translate(10, 218)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#818cf8" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Eureka Discovery</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Resolve lb://BOOKING-SERVICE</text>
+      </g>
+    </g>
+
+    <!-- ARROW 2 -> 3 -->
+    <path d="M 395 170 L 415 170" stroke="#38bdf8" stroke-width="2" marker-end="url(#dfdArrow)"/>
+
+    <!-- STAGE 3: OPENFEIGN RPC -->
+    <g transform="translate(420, 45)">
+      <rect width="170" height="340" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1.2"/>
+      <rect width="170" height="26" rx="8" fill="#065f46"/>
+      <text x="85" y="18" fill="#ffffff" font-size="9" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">3. SYNCHRONOUS RPC</text>
+
+      <g transform="translate(10, 38)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#10b981" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">BookingController</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Consumes X-User-Id header</text>
+      </g>
+      <g transform="translate(10, 98)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#10b981" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">FlightServiceClient</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">OpenFeign GET /api/flights/{id}</text>
+      </g>
+      <g transform="translate(10, 158)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#10b981" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">FareServiceClient</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">OpenFeign GET /api/fares/flight</text>
+      </g>
+      <g transform="translate(10, 218)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#10b981" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">PNR Generation</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">PnrGenerator.generatePnr()</text>
+      </g>
+    </g>
+
+    <!-- ARROW 3 -> 4 -->
+    <path d="M 590 170 L 610 170" stroke="#38bdf8" stroke-width="2" marker-end="url(#dfdArrow)"/>
+
+    <!-- STAGE 4: PERSISTENCE (HIKARICP & INNODB) -->
+    <g transform="translate(615, 45)">
+      <rect width="170" height="340" rx="8" fill="#0f172a" stroke="#8b5cf6" stroke-width="1.2"/>
+      <rect width="170" height="26" rx="8" fill="#4c1d95"/>
+      <text x="85" y="18" fill="#ffffff" font-size="9" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">4. ACID PERSISTENCE</text>
+
+      <g transform="translate(10, 38)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#8b5cf6" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Spring Data JPA</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Hibernate 6 ORM Mapping</text>
+      </g>
+      <g transform="translate(10, 98)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#8b5cf6" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">HikariCP Pool</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Zero-overhead connection pool</text>
+      </g>
+      <g transform="translate(10, 158)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#8b5cf6" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">MySQL InnoDB Engine</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Row-level locks &amp; redo log</text>
+      </g>
+      <g transform="translate(10, 218)">
+        <rect width="150" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="75" y="20" fill="#8b5cf6" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Latency: 1-5ms</text>
+        <text x="75" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">ACID Transaction Commit</text>
+      </g>
+    </g>
+
+    <!-- ARROW 4 -> 5 -->
+    <path d="M 785 170 L 805 170" stroke="#38bdf8" stroke-width="2" marker-end="url(#dfdArrow)"/>
+
+    <!-- STAGE 5: ASYNC AMQP BUS -->
+    <g transform="translate(810, 45)">
+      <rect width="160" height="340" rx="8" fill="#0f172a" stroke="#ea580c" stroke-width="1.2"/>
+      <rect width="160" height="26" rx="8" fill="#c2410c"/>
+      <text x="80" y="18" fill="#ffffff" font-size="9" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">5. AMQP BUS</text>
+
+      <g transform="translate(10, 38)">
+        <rect width="140" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="70" y="20" fill="#ea580c" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">RabbitTemplate</text>
+        <text x="70" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Jackson2JsonConverter</text>
+      </g>
+      <g transform="translate(10, 98)">
+        <rect width="140" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="70" y="20" fill="#ea580c" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Durable AMQP Queue</text>
+        <text x="70" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">booking-created (Port 5672)</text>
+      </g>
+      <g transform="translate(10, 158)">
+        <rect width="140" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="70" y="20" fill="#ea580c" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">@RabbitListener</text>
+        <text x="70" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">FlightService Consumer</text>
+      </g>
+      <g transform="translate(10, 218)">
+        <rect width="140" height="50" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="70" y="20" fill="#ea580c" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Latency: 2-8ms</text>
+        <text x="70" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Async Seat Decrement</text>
+      </g>
+    </g>
+
+    <!-- ARROW 5 -> 6 -->
+    <path d="M 970 170 L 990 170" stroke="#38bdf8" stroke-width="2" marker-end="url(#dfdArrow)"/>
+
+    <!-- STAGE 6: OUTBOUND THIRD-PARTY -->
+    <g transform="translate(990, 45)">
+      <rect width="140" height="340" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="1.2"/>
+      <rect width="140" height="26" rx="8" fill="#78350f"/>
+      <text x="70" y="18" fill="#ffffff" font-size="9" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">6. OUTBOUND</text>
+
+      <g transform="translate(8, 38)">
+        <rect width="124" height="60" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="62" y="20" fill="#f59e0b" font-size="8" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">OpenPDF Engine</text>
+        <text x="62" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">In-Memory Vector PDF</text>
+        <text x="62" y="48" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">e-Ticket generation</text>
+      </g>
+      <g transform="translate(8, 108)">
+        <rect width="124" height="60" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="62" y="20" fill="#f59e0b" font-size="8" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Gmail SMTP Relay</text>
+        <text x="62" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Port 587 STARTTLS</text>
+        <text x="62" y="48" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Dispatches e-Ticket</text>
+      </g>
+      <g transform="translate(8, 178)">
+        <rect width="124" height="60" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="62" y="20" fill="#f59e0b" font-size="8" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Razorpay API</text>
+        <text x="62" y="34" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">HMAC-SHA256 Secret</text>
+        <text x="62" y="48" fill="#cbd5e1" font-size="7" text-anchor="middle" font-family="Inter, sans-serif">Capture &amp; Refund</text>
+      </g>
+      <g transform="translate(8, 248)">
+        <rect width="124" height="40" rx="4" fill="#1e293b" stroke="#334155"/>
+        <text x="62" y="24" fill="#f59e0b" font-size="8" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">Passenger Inbox</text>
+      </g>
+    </g>
+
+    <!-- METRICS & TELEMETRY FOOTER -->
+    <g transform="translate(30, 400)">
+      <rect width="1100" height="95" rx="6" fill="#0f172a" stroke="#334155"/>
+      <rect width="1100" height="22" rx="6" fill="#1e293b"/>
+      <text x="550" y="16" fill="#38bdf8" font-size="9" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">PACKET LATENCY &amp; RESILIENCE TELEMETRY MATRIX</text>
+      
+      <g transform="translate(20, 32)">
+        <text x="0" y="16" fill="#cbd5e1" font-size="8" font-family="Inter, sans-serif"><tspan fill="#38bdf8" font-weight="bold">• Ingress Round-Trip:</tspan> 15 - 40 ms total response time from client click to PNR on screen</text>
+        <text x="0" y="34" fill="#cbd5e1" font-size="8" font-family="Inter, sans-serif"><tspan fill="#10b981" font-weight="bold">• Synchronous RPC (OpenFeign):</tspan> 5 - 15 ms internal hop latency via Eureka client-side round-robin load balancer</text>
+        <text x="0" y="52" fill="#cbd5e1" font-size="8" font-family="Inter, sans-serif"><tspan fill="#ea580c" font-weight="bold">• Asynchronous Event Bus (RabbitMQ):</tspan> 2 - 8 ms AMQP message transit, isolating background seat deduction from HTTP thread pool</text>
+      </g>
+    </g>
+  </svg>
+    </div>
+
+    <div class="speaker-drawer">
+      <div class="speaker-tag">Speaker Talking Points</div>
+      <ul class="speaker-list">
+        <li>Packet Ingress: HTTP request enters Netty EventLoop on port 8083, passes CorsWebFilter and JwtAuthenticationFilter.</li><li>Dynamic Routing: Spring Cloud Gateway queries Eureka cache to resolve lb://BOOKING-SERVICE via round-robin load balancing.</li><li>Decoupled Pipelines: Synchronous OpenFeign for seat checks (5-15ms); asynchronous RabbitMQ for seat deduction (2-8ms).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" onclick="window.print()">🖨️ Print to PDF</button>
+    <button class="nav-btn" onclick="document.documentElement.requestFullscreen()">⛶ Fullscreen</button>
+  </div>
+</body>
+</html>

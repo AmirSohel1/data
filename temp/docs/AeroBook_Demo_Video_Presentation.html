@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroBook - Synchronized 8-10 Min Presentation Deck</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+    @page {
+      size: 297mm 210mm landscape;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #070d1e;
+      color: #e2e8f0;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .slide-page {
+      width: 297mm;
+      height: 210mm;
+      page-break-after: always;
+      padding: 10mm 14mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: #070d1e;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-left: 5px solid #2563eb;
+      padding: 8px 16px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .brand-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 0.05em;
+    }
+
+    .slide-timing-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8pt;
+      font-weight: 700;
+      background: #1e293b;
+      color: #38bdf8;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid #334155;
+      display: inline-block;
+      margin-bottom: 2px;
+    }
+
+    .slide-main-title {
+      font-size: 13pt;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .slide-category {
+      font-size: 8pt;
+      font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 0.04em;
+    }
+
+    /* Body 2-Column Grid */
+    .slide-body-grid {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .left-content-panel {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      padding: 10px 14px;
+    }
+
+    .right-content-panel {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .panel-heading {
+      font-size: 8pt;
+      font-weight: 800;
+      color: #f59e0b;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 4px;
+    }
+
+    .bullets-container {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .bullet-item {
+      line-height: 1.3;
+    }
+
+    .bullet-head {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 1px;
+    }
+
+    .bullet-body {
+      font-size: 8pt;
+      color: #cbd5e1;
+    }
+
+    .metric-card {
+      background: #1e293b;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+
+    .metric-title {
+      font-size: 8.5pt;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .metric-desc {
+      font-size: 7.5pt;
+      color: #cbd5e1;
+      line-height: 1.25;
+    }
+
+    /* Bottom Action Bar */
+    .bottom-action-bar {
+      background: #172554;
+      border: 1px solid #1e40af;
+      padding: 6px 12px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+    }
+
+    .action-bar-label {
+      font-size: 7.5pt;
+      font-weight: 800;
+      color: #93c5fd;
+      letter-spacing: 0.04em;
+      margin-bottom: 2px;
+    }
+
+    .action-bar-text {
+      font-size: 8pt;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+
+    /* Teleprompter Voiceover Drawer */
+    .teleprompter-drawer {
+      background: #022c22;
+      border: 1px solid #065f46;
+      border-left: 4px solid #10b981;
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+
+    .drawer-header {
+      font-size: 7.5pt;
+      font-weight: 800;
+      color: #6ee7b7;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .drawer-body {
+      font-size: 8pt;
+      color: #d1fae5;
+      line-height: 1.35;
+      max-height: 48mm;
+      overflow: hidden;
+    }
+
+    /* Cover Page Styles */
+    .cover-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      padding: 10px 20px;
+    }
+
+    .cover-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9pt;
+      font-weight: 700;
+      background: #1e293b;
+      color: #38bdf8;
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 4px;
+      border: 1px solid #334155;
+      width: fit-content;
+      margin-bottom: 12px;
+    }
+
+    .cover-title {
+      font-size: 26pt;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .cover-subtitle {
+      font-size: 13pt;
+      font-weight: 600;
+      color: #38bdf8;
+      margin-bottom: 10px;
+    }
+
+    .cover-desc {
+      font-size: 10pt;
+      color: #94a3b8;
+      max-width: 800px;
+      margin-bottom: 24px;
+    }
+
+    .cover-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .cover-card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      padding: 14px;
+    }
+
+    .cover-card-label {
+      font-size: 7.5pt;
+      font-weight: 800;
+      color: #94a3b8;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .cover-card-val {
+      font-size: 15pt;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .cover-card-sub {
+      font-size: 8pt;
+      color: #64748b;
+    }
+
+    .roles-strip {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .role-pill {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 8.5pt;
+      color: #cbd5e1;
+    }
+
+    .role-tag {
+      color: #38bdf8;
+      font-weight: 700;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  
+  <section class="slide-page">
+    <div class="slide-header-bar">
+      <div class="brand-tag">AEROBOOK PRESENTATION DECK</div>
+      <div class="slide-timing-badge">MASTER TITLE SLIDE</div>
+    </div>
+    <div class="cover-content">
+      <div class="cover-badge">EXECUTIVE DEMONSTRATION SUITE</div>
+      <h1 class="cover-title">AeroBook Demonstration Video Presentation</h1>
+      <h2 class="cover-subtitle">Synchronized 8–10 Minute Slide Deck with Full Voiceover Script &amp; Visual Cues</h2>
+      <p class="cover-desc">Designed for synchronized live project recording, academic evaluations, and architectural reviews.</p>
+      
+      <div class="cover-grid">
+        <div class="cover-card">
+          <div class="cover-card-label">TARGET VIDEO DURATION</div>
+          <div class="cover-card-val" style="color: #38bdf8;">8 – 10 Minutes</div>
+          <div class="cover-card-sub">0:00–4:00 Arch | 4:00–10:00 Live</div>
+        </div>
+        <div class="cover-card">
+          <div class="cover-card-label">BACKEND ARCHITECTURE</div>
+          <div class="cover-card-val" style="color: #10b981;">11 Microservices</div>
+          <div class="cover-card-sub">Spring Cloud &amp; Netflix Eureka</div>
+        </div>
+        <div class="cover-card">
+          <div class="cover-card-label">DATABASE ISOLATION</div>
+          <div class="cover-card-val" style="color: #f59e0b;">8 MySQL DBs</div>
+          <div class="cover-card-sub">Database-per-Service Pattern</div>
+        </div>
+        <div class="cover-card">
+          <div class="cover-card-label">FRONTEND PLATFORM</div>
+          <div class="cover-card-val" style="color: #c084fc;">Angular 18 SPA</div>
+          <div class="cover-card-sub">Signals &amp; Tailwind Styling</div>
+        </div>
+      </div>
+
+      <div class="roles-strip">
+        <div class="role-pill"><span class="role-tag">ROLE 1: PASSENGER</span> priya@gmail.com (Booking, Seat Map, Razorpay, PDF E-Ticket)</div>
+        <div class="role-pill"><span class="role-tag">ROLE 2: STAFF</span> staff@aerobook.com (Ground Desk, BCBP Barcode Scanner, Gate Dispatch)</div>
+        <div class="role-pill"><span class="role-tag">ROLE 3: ADMIN</span> admin@aerobook.com (Fleet Roster, Route Pricing, Promotional Campaigns)</div>
+      </div>
+    </div>
+  </section>
+  
+    <section class="slide-page">
+      <div class="slide-header-bar">
+        <div>
+          <div class="slide-timing-badge">00:00 - 00:45 | Vision & Problem</div>
+          <h2 class="slide-main-title">Introduction & Real-World Aviation Problem</h2>
+        </div>
+        <div class="slide-category">PART 1: OVERVIEW & ARCHITECTURE</div>
+      </div>
+
+      <div class="slide-body-grid">
+        <div class="left-content-panel">
+          <div class="panel-heading">&#128736; ARCHITECTURAL &amp; TECHNICAL HIGHLIGHTS</div>
+          <div class="bullets-container">
+            
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Industry Challenge</div>
+        <div class="bullet-body">Legacy monoliths suffer from single-point-of-failure risks and fragile seasonal scaling.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Fault Isolation Principle</div>
+        <div class="bullet-body">Failures in ancillary reporting or notifications never block core reservations or flight boarding.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Enterprise Objectives</div>
+        <div class="bullet-body">High availability, sub-millisecond perimeter security, and zero-downtime flight operations.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Platform Scope</div>
+        <div class="bullet-body">End-to-end coverage: Passenger booking, ground staff gate desk, and executive fleet control.</div>
+      </div>
+    
+          </div>
+        </div>
+        <div class="right-content-panel">
+          <div class="panel-heading">&#9889; CORE RUNTIME DOMAINS</div>
+          
+      <div class="metric-card" style="border-left: 4px solid #EF4444;">
+        <div class="metric-title" style="color: #EF4444;">Legacy Monoliths</div>
+        <div class="metric-desc">Tightly coupled DBs, cascading outages during traffic surges</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #10B981;">
+        <div class="metric-title" style="color: #10B981;">AeroBook Solution</div>
+        <div class="metric-desc">11 isolated Spring Boot services, independent horizontal scale</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #38BDF8;">
+        <div class="metric-title" style="color: #38BDF8;">Target SLA</div>
+        <div class="metric-desc">99.99% uptime, <50ms core booking latency, zero overselling</div>
+      </div>
+    
+        </div>
+      </div>
+
+      <div class="bottom-action-bar">
+        <div class="action-bar-label">&#128249; ON-SCREEN LIVE ACTION / VISUAL CUE:</div>
+        <div class="action-bar-text">Show AeroBook Landing Page (http://localhost:4200). Smoothly hover over the hero search bar, date pickers, and top navigation bar.</div>
+      </div>
+
+      <div class="teleprompter-drawer">
+        <div class="drawer-header">&#127908; SYNCHRONIZED SPOKEN VOICEOVER SCRIPT (READ ALOUD DURING THIS SLIDE):</div>
+        <div class="drawer-body">Hello everyone, and welcome. Today, I am excited to demonstrate AeroBook — an enterprise-grade, cloud-native airline flight reservation, passenger services, airport ground operations, and fleet management platform.<br><br>In commercial aviation, legacy monolithic booking engines struggle with single points of failure, slow holiday booking spikes, and fragmented airport operations. If an email notification service slows down or a reporting query runs, it should never prevent a passenger from booking a flight or boarding an aircraft.<br><br>AeroBook was engineered from the ground up to solve these mission-critical challenges using a distributed, event-driven microservices architecture that guarantees fault isolation, high availability, sub-millisecond perimeter security, and real-time operational consistency.</div>
+      </div>
+    </section>
+    
+    <section class="slide-page">
+      <div class="slide-header-bar">
+        <div>
+          <div class="slide-timing-badge">00:45 - 01:45 | Microservices & DBs</div>
+          <h2 class="slide-main-title">Distributed Architecture & 11 Microservices Suite</h2>
+        </div>
+        <div class="slide-category">PART 1: OVERVIEW & ARCHITECTURE</div>
+      </div>
+
+      <div class="slide-body-grid">
+        <div class="left-content-panel">
+          <div class="panel-heading">&#128736; ARCHITECTURAL &amp; TECHNICAL HIGHLIGHTS</div>
+          <div class="bullets-container">
+            
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Perimeter Ingress</div>
+        <div class="bullet-body">Spring Cloud Netty API Gateway (Port 8083) handles reverse proxying & CORS.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Dynamic Discovery</div>
+        <div class="bullet-body">Netflix Eureka Registry (Port 8761) provides client-side load balancing via OpenFeign.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Centralized Config</div>
+        <div class="bullet-body">Spring Cloud Config Server (Port 8080) delivers externalized environment properties.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Database Isolation</div>
+        <div class="bullet-body">8 dedicated MySQL schemas (Database-per-Service) eliminate cross-domain table locks.</div>
+      </div>
+    
+          </div>
+        </div>
+        <div class="right-content-panel">
+          <div class="panel-heading">&#9889; CORE RUNTIME DOMAINS</div>
+          
+      <div class="metric-card" style="border-left: 4px solid #6366F1;">
+        <div class="metric-title" style="color: #6366F1;">Gateway & Config</div>
+        <div class="metric-desc">Ports 8083 & 8080: Netty non-blocking ingress & Git-backed config</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #10B981;">
+        <div class="metric-title" style="color: #10B981;">8 Business Domains</div>
+        <div class="metric-desc">Auth, User, Flight, Fare, Booking, Payment, Check-In, Notification</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #F59E0B;">
+        <div class="metric-title" style="color: #F59E0B;">8 MySQL Schemas</div>
+        <div class="metric-desc">Strict schema boundaries with zero distributed 2PC locking</div>
+      </div>
+    
+        </div>
+      </div>
+
+      <div class="bottom-action-bar">
+        <div class="action-bar-label">&#128249; ON-SCREEN LIVE ACTION / VISUAL CUE:</div>
+        <div class="action-bar-text">Switch to Netflix Eureka Dashboard (http://localhost:8761). Highlight registered instances: CONFIG-SERVER, AUTH-SERVICE, API-GATEWAY, USER-SERVICE, PAYMENT-SERVICE, CHECK-IN-SERVICE, FLIGHT-SERVICE, BOOKING-SERVICE, FARE-SERVICE, NOTIFICATION-SERVICE.</div>
+      </div>
+
+      <div class="teleprompter-drawer">
+        <div class="drawer-header">&#127908; SYNCHRONIZED SPOKEN VOICEOVER SCRIPT (READ ALOUD DURING THIS SLIDE):</div>
+        <div class="drawer-body">Under the hood, AeroBook is powered by 11 backend Java Spring Boot microservices and an Angular 18 Single Page Application.<br><br>As you can see right here on our Eureka Service Discovery dashboard:
+- At the perimeter, we have our Spring Cloud API Gateway running on Netty at port 8083, which acts as the single reverse proxy and security barrier for all incoming client traffic.
+- We have centralized configuration management using Spring Cloud Config Server at port 8080.
+- The business tier is decomposed into independent domain services: auth-service for cryptographic JWT security, user-service for traveler profiles, flight-service for flight schedules and fleet management, fare-service for tiered pricing and coupons, booking-service for reservations, payment-service for transactions, check-in-service for airport boarding passes, and notification-service for email delivery.
+- Crucially, we enforce the Database-per-Service pattern. AeroBook runs 8 isolated MySQL database schemas, guaranteeing zero cross-database locking between business domains.</div>
+      </div>
+    </section>
+    
+    <section class="slide-page">
+      <div class="slide-header-bar">
+        <div>
+          <div class="slide-timing-badge">01:45 - 02:45 | Engineering Highlights</div>
+          <h2 class="slide-main-title">Core Technical Innovations: Concurrency, AMQP & Security</h2>
+        </div>
+        <div class="slide-category">PART 1: OVERVIEW & ARCHITECTURE</div>
+      </div>
+
+      <div class="slide-body-grid">
+        <div class="left-content-panel">
+          <div class="panel-heading">&#128736; ARCHITECTURAL &amp; TECHNICAL HIGHLIGHTS</div>
+          <div class="bullets-container">
+            
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Pessimistic Row Locking</div>
+        <div class="bullet-body">SELECT FOR UPDATE ensures atomic seat availability checks and zero overselling.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Event-Driven Decoupling</div>
+        <div class="bullet-body">RabbitMQ AMQP message broker guarantees eventual consistency with sub-50ms latency.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Zero-Overhead RBAC</div>
+        <div class="bullet-body">API Gateway mutates downstream headers (X-User-Id, X-User-Role) for instant auth.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Idempotent Webhooks</div>
+        <div class="bullet-body">Cryptographic HMAC-SHA256 verification and ledger checks prevent duplicate payments.</div>
+      </div>
+    
+          </div>
+        </div>
+        <div class="right-content-panel">
+          <div class="panel-heading">&#9889; CORE RUNTIME DOMAINS</div>
+          
+      <div class="metric-card" style="border-left: 4px solid #EF4444;">
+        <div class="metric-title" style="color: #EF4444;">Pessimistic Lock</div>
+        <div class="metric-desc">SELECT FOR UPDATE prevents simultaneous double-booking of final seats</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #F59E0B;">
+        <div class="metric-title" style="color: #F59E0B;">RabbitMQ AMQP</div>
+        <div class="metric-desc">flight.seat.deduct & booking.notification queues decouple operations</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #10B981;">
+        <div class="metric-title" style="color: #10B981;">Gateway Header Mutation</div>
+        <div class="metric-desc">X-User-Id & X-User-Role headers speed up internal microservice calls</div>
+      </div>
+    
+        </div>
+      </div>
+
+      <div class="bottom-action-bar">
+        <div class="action-bar-label">&#128249; ON-SCREEN LIVE ACTION / VISUAL CUE:</div>
+        <div class="action-bar-text">Show RabbitMQ Management Console (http://localhost:15672) showing queues (flight.seat.deduct, booking.notification) or display architectural innovation diagrams.</div>
+      </div>
+
+      <div class="teleprompter-drawer">
+        <div class="drawer-header">&#127908; SYNCHRONIZED SPOKEN VOICEOVER SCRIPT (READ ALOUD DURING THIS SLIDE):</div>
+        <div class="drawer-body">Building a distributed platform like AeroBook involves resolving real distributed systems challenges. Here are three key innovations we engineered into the platform:<br><br>1. High-Concurrency Seat Locking & Anti-Overselling: To prevent race conditions when multiple users book the last available seat simultaneously, our Flight Service implements pessimistic row-level locking using SELECT FOR UPDATE within an isolated transactional boundary. This completely eliminates seat overselling.
+2. Hybrid Eventual Consistency with RabbitMQ: Instead of slow, fragile distributed two-phase commits, we leverage RabbitMQ AMQP messaging. When a payment succeeds, the booking service asynchronously publishes seat deduction and e-ticket generation events, keeping microservice response times under 50 milliseconds.
+3. Perimeter Authentication with Zero Internal Overhead: The Netty API Gateway decrypts and verifies JWT tokens at the boundary, and mutates downstream request headers with trusted identity claims (X-User-Id and X-User-Role). Downstream microservices evaluate roles instantly without repeated asymmetric cryptographic decodes.</div>
+      </div>
+    </section>
+    
+    <section class="slide-page">
+      <div class="slide-header-bar">
+        <div>
+          <div class="slide-timing-badge">02:45 - 03:30 | Personas & Quality</div>
+          <h2 class="slide-main-title">Multi-Persona Experience & Angular 18 Architecture</h2>
+        </div>
+        <div class="slide-category">PART 1: OVERVIEW & ARCHITECTURE</div>
+      </div>
+
+      <div class="slide-body-grid">
+        <div class="left-content-panel">
+          <div class="panel-heading">&#128736; ARCHITECTURAL &amp; TECHNICAL HIGHLIGHTS</div>
+          <div class="bullets-container">
+            
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Passenger Persona (/customer)</div>
+        <div class="bullet-body">Flight discovery, dynamic coupon engine, seat map selection, and e-ticket downloads.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Airport Staff Persona (/staff)</div>
+        <div class="bullet-body">Ground desk manifests, real-time boarding barcode scanner, and flight status dispatcher.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Admin Persona (/admin)</div>
+        <div class="bullet-body">Commercial fleet registry, flight route scheduling, fare matrix, and credentials audit.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Quality & Testing</div>
+        <div class="bullet-body">Angular 18 standalone signals, Tailwind CSS, and SonarQube static analysis pipeline.</div>
+      </div>
+    
+          </div>
+        </div>
+        <div class="right-content-panel">
+          <div class="panel-heading">&#9889; CORE RUNTIME DOMAINS</div>
+          
+      <div class="metric-card" style="border-left: 4px solid #38BDF8;">
+        <div class="metric-title" style="color: #38BDF8;">Passenger Portal</div>
+        <div class="metric-desc">Search, Seat Map, Razorpay, PDF E-Tickets, Web Check-In</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #10B981;">
+        <div class="metric-title" style="color: #10B981;">Ground Staff Operations</div>
+        <div class="metric-desc">Passenger Manifest, BCBP Barcode Scanner, Gate Dispatcher</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #8B5CF6;">
+        <div class="metric-title" style="color: #8B5CF6;">Executive Admin</div>
+        <div class="metric-desc">Aircraft Fleet, Route Pricing, Promo Campaigns, User Audit</div>
+      </div>
+    
+        </div>
+      </div>
+
+      <div class="bottom-action-bar">
+        <div class="action-bar-label">&#128249; ON-SCREEN LIVE ACTION / VISUAL CUE:</div>
+        <div class="action-bar-text">Return to Angular 18 Frontend (http://localhost:4200). Smoothly scroll through the responsive homepage UI showcasing Tailwind styling and Lucide icons.</div>
+      </div>
+
+      <div class="teleprompter-drawer">
+        <div class="drawer-header">&#127908; SYNCHRONIZED SPOKEN VOICEOVER SCRIPT (READ ALOUD DURING THIS SLIDE):</div>
+        <div class="drawer-body">AeroBook delivers a complete multi-persona experience tailored to three distinct roles:
+- The Passenger: Real-time flight search, tiered cabin selection, dynamic coupon application, Razorpay payment processing, interactive seat selection, digital PDF e-tickets, and web check-in.
+- The Airport Ground Staff: Dedicated airport operations desk for passenger manifests, PNR lookups, real-time boarding pass barcode scanning, flight dispatching, and incident logging.
+- The Airline Administrator: Fleet aircraft inventory, route and flight schedule creation, fare matrix controls, and user directory management.<br><br>On the frontend, AeroBook is built with Angular 18, utilizing standalone signals, Tailwind CSS, and automated SonarQube static code quality validation with JaCoCo and LCOV coverage across the entire codebase.</div>
+      </div>
+    </section>
+    
+    <section class="slide-page">
+      <div class="slide-header-bar">
+        <div>
+          <div class="slide-timing-badge">03:30 - 04:00 | Live Setup & Credentials</div>
+          <h2 class="slide-main-title">Transition to Live Demo & Environment Topology</h2>
+        </div>
+        <div class="slide-category">PART 1: OVERVIEW & ARCHITECTURE</div>
+      </div>
+
+      <div class="slide-body-grid">
+        <div class="left-content-panel">
+          <div class="panel-heading">&#128736; ARCHITECTURAL &amp; TECHNICAL HIGHLIGHTS</div>
+          <div class="bullets-container">
+            
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Passenger Test Account</div>
+        <div class="bullet-body">priya@gmail.com / Passenger@123 (ROLE_USER -> Routes to /customer)</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Ground Staff Test Account</div>
+        <div class="bullet-body">staff@aerobook.com / Staff@123 (ROLE_STAFF -> Routes to /staff)</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; System Admin Test Account</div>
+        <div class="bullet-body">admin@aerobook.com / Admin@123 (ROLE_ADMIN -> Routes to /admin)</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Promotional Test Coupon</div>
+        <div class="bullet-body">WELCOME10 or AERO2026 (10% Dynamic Discount Calculation)</div>
+      </div>
+    
+          </div>
+        </div>
+        <div class="right-content-panel">
+          <div class="panel-heading">&#9889; CORE RUNTIME DOMAINS</div>
+          
+      <div class="metric-card" style="border-left: 4px solid #38BDF8;">
+        <div class="metric-title" style="color: #38BDF8;">Frontend Host</div>
+        <div class="metric-desc">http://localhost:4200 (Angular 18 Standalone SPA)</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #6366F1;">
+        <div class="metric-title" style="color: #6366F1;">API Gateway</div>
+        <div class="metric-desc">http://localhost:8083 (Spring Cloud Netty Gateway)</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #10B981;">
+        <div class="metric-title" style="color: #10B981;">Eureka Registry</div>
+        <div class="metric-desc">http://localhost:8761 (10 Active Registered Microservices)</div>
+      </div>
+    
+        </div>
+      </div>
+
+      <div class="bottom-action-bar">
+        <div class="action-bar-label">&#128249; ON-SCREEN LIVE ACTION / VISUAL CUE:</div>
+        <div class="action-bar-text">Hover over the Login button on the top navigation bar. Prepare the credentials table on screen for a smooth live walkthrough transition.</div>
+      </div>
+
+      <div class="teleprompter-drawer">
+        <div class="drawer-header">&#127908; SYNCHRONIZED SPOKEN VOICEOVER SCRIPT (READ ALOUD DURING THIS SLIDE):</div>
+        <div class="drawer-body">Now that we have covered the business domain and the distributed architecture, let's jump straight into the live demonstration.<br><br>We will walk through the entire lifecycle: from a passenger booking a flight, applying a discount, and checking in, to ground staff boarding the passenger at the departure gate, and finally the administrative control center.<br><br>All services are fully active in our local cluster, communicating seamlessly through the Spring Cloud Gateway.</div>
+      </div>
+    </section>
+    
+    <section class="slide-page">
+      <div class="slide-header-bar">
+        <div>
+          <div class="slide-timing-badge">04:00 - 05:30 | Search & Coupon Engine</div>
+          <h2 class="slide-main-title">Live Step 1: Passenger Flight Search & Dynamic Fares</h2>
+        </div>
+        <div class="slide-category">PART 2: LIVE SYSTEM DEMONSTRATION</div>
+      </div>
+
+      <div class="slide-body-grid">
+        <div class="left-content-panel">
+          <div class="panel-heading">&#128736; ARCHITECTURAL &amp; TECHNICAL HIGHLIGHTS</div>
+          <div class="bullets-container">
+            
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; JWT Authentication</div>
+        <div class="bullet-body">Auth Service issues 24-hr token; Gateway automatically routes role to /customer.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Route Discovery</div>
+        <div class="bullet-body">Gateway queries Flight Service via Eureka load balancing for active scheduled routes.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Dynamic Pricing</div>
+        <div class="bullet-body">Fare Service applies cabin multiplier and itemizes PSF, UDF, and GST taxes.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Coupon Engine</div>
+        <div class="bullet-body">Validates code WELCOME10 against database quotas and applies instant discount.</div>
+      </div>
+    
+          </div>
+        </div>
+        <div class="right-content-panel">
+          <div class="panel-heading">&#9889; CORE RUNTIME DOMAINS</div>
+          
+      <div class="metric-card" style="border-left: 4px solid #38BDF8;">
+        <div class="metric-title" style="color: #38BDF8;">Flight AB-101</div>
+        <div class="metric-desc">DEL -> BOM | Non-Stop Boeing 737 | Live Seats: 142 Available</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #F59E0B;">
+        <div class="metric-title" style="color: #F59E0B;">Fare Itemization</div>
+        <div class="metric-desc">Base: ₹4,500 + PSF: ₹250 + GST: ₹225 = ₹4,975 Gross</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #10B981;">
+        <div class="metric-title" style="color: #10B981;">Discount Applied</div>
+        <div class="metric-desc">Coupon WELCOME10 (-10%): Net Payable = ₹4,477.50</div>
+      </div>
+    
+        </div>
+      </div>
+
+      <div class="bottom-action-bar">
+        <div class="action-bar-label">&#128249; ON-SCREEN LIVE ACTION / VISUAL CUE:</div>
+        <div class="action-bar-text">1. Log in as priya@gmail.com / Passenger@123. &bull; 2. Land on /customer dashboard. &bull; 3. Search: DEL to BOM, tomorrow's date, Economy class. &bull; 4. Show AB-101 and available seat count. &bull; 5. Select flight, enter passenger details, apply coupon WELCOME10, and highlight live fare discount.</div>
+      </div>
+
+      <div class="teleprompter-drawer">
+        <div class="drawer-header">&#127908; SYNCHRONIZED SPOKEN VOICEOVER SCRIPT (READ ALOUD DURING THIS SLIDE):</div>
+        <div class="drawer-body">We begin by logging in as our passenger, Priya. Notice how the API Gateway instantly authenticates our JWT and routes us directly to our dedicated Customer Dashboard.<br><br>Let's search for a flight from Delhi to Mumbai. The frontend queries our API Gateway, which load-balances the request through Eureka to the Flight Service.<br><br>Here are our live scheduled flights. Notice the real-time available seat counter. Let's select flight AB-101.<br><br>On the booking configuration screen, our Fare Service dynamically calculates the base fare, Passenger Service Fee (PSF), User Development Fee (UDF), and GST taxes.<br><br>Let's enter our passenger details, and now let's apply our promo code: WELCOME10. Instantly, the Fare Service verifies the coupon validity, applies the discount, and recalculates our final payable total.</div>
+      </div>
+    </section>
+    
+    <section class="slide-page">
+      <div class="slide-header-bar">
+        <div>
+          <div class="slide-timing-badge">05:30 - 06:45 | Payment & E-Ticket</div>
+          <h2 class="slide-main-title">Live Step 2: Razorpay Payment & OpenPDF Ticket</h2>
+        </div>
+        <div class="slide-category">PART 2: LIVE SYSTEM DEMONSTRATION</div>
+      </div>
+
+      <div class="slide-body-grid">
+        <div class="left-content-panel">
+          <div class="panel-heading">&#128736; ARCHITECTURAL &amp; TECHNICAL HIGHLIGHTS</div>
+          <div class="bullets-container">
+            
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Razorpay Checkout</div>
+        <div class="bullet-body">Modal checkout with client-side integration and server-side order generation.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; HMAC Verification</div>
+        <div class="bullet-body">Payment Service cryptographically checks razorpay_signature before state commit.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Asynchronous RabbitMQ</div>
+        <div class="bullet-body">AMQP message triggers atomic seat decrement in flight_db and email dispatch.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; OpenPDF E-Ticket</div>
+        <div class="bullet-body">High-fidelity dual-view ticket with 8-character PNR, tax details, and barcode.</div>
+      </div>
+    
+          </div>
+        </div>
+        <div class="right-content-panel">
+          <div class="panel-heading">&#9889; CORE RUNTIME DOMAINS</div>
+          
+      <div class="metric-card" style="border-left: 4px solid #10B981;">
+        <div class="metric-title" style="color: #10B981;">HMAC-SHA256 Security</div>
+        <div class="metric-desc">Server-side signature check prevents client payload manipulation</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #6366F1;">
+        <div class="metric-title" style="color: #6366F1;">Unique PNR Generated</div>
+        <div class="metric-desc">8-character alphanumeric record (e.g., ABK79421) committed to booking_db</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #38BDF8;">
+        <div class="metric-title" style="color: #38BDF8;">OpenPDF Generator</div>
+        <div class="metric-desc">Instant vector PDF e-ticket and invoice ready for passenger download</div>
+      </div>
+    
+        </div>
+      </div>
+
+      <div class="bottom-action-bar">
+        <div class="action-bar-label">&#128249; ON-SCREEN LIVE ACTION / VISUAL CUE:</div>
+        <div class="action-bar-text">1. Click Proceed to Payment. &bull; 2. Razorpay checkout modal opens. &bull; 3. Complete mock payment simulation and click Pay Now. &bull; 4. Show payment confirmation and 8-character PNR (ABK79421). &bull; 5. Click View E-Ticket and show OpenPDF official ticket modal and PDF download.</div>
+      </div>
+
+      <div class="teleprompter-drawer">
+        <div class="drawer-header">&#127908; SYNCHRONIZED SPOKEN VOICEOVER SCRIPT (READ ALOUD DURING THIS SLIDE):</div>
+        <div class="drawer-body">Now let's proceed to payment. AeroBook integrates seamlessly with Razorpay.<br><br>When I click 'Pay', our backend payment service executes cryptographic HMAC-SHA256 signature verification to guarantee transaction authenticity and prevent tampering.<br><br>And just like that, the payment is confirmed! Behind the scenes, the Booking Service created a unique 8-character PNR, published an asynchronous event to RabbitMQ, and the Flight Service decremented the seat count in MySQL under row-level lock.<br><br>Simultaneously, the Notification Service dispatched an email confirmation with an attached PDF e-ticket. When I click 'View E-Ticket', we get this beautiful, print-ready document generated using OpenPDF, complete with the flight itinerary, fare breakdown, and official airline header.</div>
+      </div>
+    </section>
+    
+    <section class="slide-page">
+      <div class="slide-header-bar">
+        <div>
+          <div class="slide-timing-badge">06:45 - 07:45 | Seat Map & Boarding Pass</div>
+          <h2 class="slide-main-title">Live Step 3: Web Check-In & IATA Boarding Pass</h2>
+        </div>
+        <div class="slide-category">PART 2: LIVE SYSTEM DEMONSTRATION</div>
+      </div>
+
+      <div class="slide-body-grid">
+        <div class="left-content-panel">
+          <div class="panel-heading">&#128736; ARCHITECTURAL &amp; TECHNICAL HIGHLIGHTS</div>
+          <div class="bullets-container">
+            
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Interactive Fuselage Map</div>
+        <div class="bullet-body">Visual seating layout showing occupied (red) vs available (green/blue) seats.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Atomic Seat Assignment</div>
+        <div class="bullet-body">Check-In Service validates seat availability and locks allocation to booking record.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Lifecycle Transition</div>
+        <div class="bullet-body">Passenger booking status advances from BOOKED to CHECKED_IN.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; IATA Barcode Standard</div>
+        <div class="bullet-body">Generates authentic BCBP boarding pass with barcode string (BP-X-YYZ) & gate info.</div>
+      </div>
+    
+          </div>
+        </div>
+        <div class="right-content-panel">
+          <div class="panel-heading">&#9889; CORE RUNTIME DOMAINS</div>
+          
+      <div class="metric-card" style="border-left: 4px solid #38BDF8;">
+        <div class="metric-title" style="color: #38BDF8;">Fuselage Seat Map</div>
+        <div class="metric-desc">Dynamic SVG/CSS grid matching aircraft cabin configuration</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #10B981;">
+        <div class="metric-title" style="color: #10B981;">Seat 12A Allocated</div>
+        <div class="metric-desc">Window seat locked to PNR ABK79421 in checkin_db</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #F59E0B;">
+        <div class="metric-title" style="color: #F59E0B;">IATA Boarding Pass</div>
+        <div class="metric-desc">Includes Gate 4B, Boarding Group 2, and digital 2D barcode</div>
+      </div>
+    
+        </div>
+      </div>
+
+      <div class="bottom-action-bar">
+        <div class="action-bar-label">&#128249; ON-SCREEN LIVE ACTION / VISUAL CUE:</div>
+        <div class="action-bar-text">1. Navigate to Web Check-In. &bull; 2. Enter PNR ABK79421. &bull; 3. Fuselage seat map renders dynamically. &bull; 4. Select window seat 12A and click Confirm Check-In. &bull; 5. Show digital Boarding Pass with IATA barcode (BP-X-YYZ), gate number, and seat 12A. &bull; 6. Click Download Boarding Pass.</div>
+      </div>
+
+      <div class="teleprompter-drawer">
+        <div class="drawer-header">&#127908; SYNCHRONIZED SPOKEN VOICEOVER SCRIPT (READ ALOUD DURING THIS SLIDE):</div>
+        <div class="drawer-body">Now let's complete Web Check-In. Passengers can check in directly from their phone or browser. When I enter our PNR, AeroBook loads an interactive seat map representing the actual aircraft fuselage.<br><br>You can see occupied seats disabled in real time. Let's select seat 12A by the window.<br><br>When I click 'Confirm Check-In', our check-in-service locks in the seat assignment, updates our status from BOOKED to CHECKED_IN, and generates our digital IATA-compliant Boarding Pass.<br><br>Notice the generated high-resolution barcode, terminal gate, boarding group, and sequence number. The passenger is now 100% ready for travel.</div>
+      </div>
+    </section>
+    
+    <section class="slide-page">
+      <div class="slide-header-bar">
+        <div>
+          <div class="slide-timing-badge">07:45 - 08:45 | Manifest & Gate Scan</div>
+          <h2 class="slide-main-title">Live Step 4: Airport Ground Operations & Gate Scanner</h2>
+        </div>
+        <div class="slide-category">PART 2: LIVE SYSTEM DEMONSTRATION</div>
+      </div>
+
+      <div class="slide-body-grid">
+        <div class="left-content-panel">
+          <div class="panel-heading">&#128736; ARCHITECTURAL &amp; TECHNICAL HIGHLIGHTS</div>
+          <div class="bullets-container">
+            
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Airport Staff Portal</div>
+        <div class="bullet-body">Specialized dashboard at /staff secured by Spring Security RBAC (ROLE_STAFF).</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Flight Manifest Oversight</div>
+        <div class="bullet-body">Ground agents view real-time boarding completion rates and checked baggage.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Gate Boarding Scanner</div>
+        <div class="bullet-body">Validates boarding barcode and advances passenger status to BOARDED.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Operational Dispatcher</div>
+        <div class="bullet-body">Broadcasts operational flight status (SCHEDULED -> BOARDING -> DEPARTED).</div>
+      </div>
+    
+          </div>
+        </div>
+        <div class="right-content-panel">
+          <div class="panel-heading">&#9889; CORE RUNTIME DOMAINS</div>
+          
+      <div class="metric-card" style="border-left: 4px solid #38BDF8;">
+        <div class="metric-title" style="color: #38BDF8;">Passenger Manifest</div>
+        <div class="metric-desc">Full manifest visibility: Seat 12A, PNR ABK79421, Bag Tag #BG8841</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #10B981;">
+        <div class="metric-title" style="color: #10B981;">Gate Scanner</div>
+        <div class="metric-desc">Instant transition from CHECKED_IN to BOARDED upon barcode scan</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #6366F1;">
+        <div class="metric-title" style="color: #6366F1;">Flight Dispatch</div>
+        <div class="metric-desc">Operational status updated to BOARDING across all airport boards</div>
+      </div>
+    
+        </div>
+      </div>
+
+      <div class="bottom-action-bar">
+        <div class="action-bar-label">&#128249; ON-SCREEN LIVE ACTION / VISUAL CUE:</div>
+        <div class="action-bar-text">1. Log out and log in as staff@aerobook.com / Staff@123. &bull; 2. Land on Staff Dashboard (/staff). &bull; 3. In Passenger Manifest, search for flight AB-101. Locate Priya's record with seat 12A. &bull; 4. Click Simulate Gate Scan / Board Passenger. Show status updating to BOARDED. &bull; 5. In Flight Status Dispatcher, update flight status from SCHEDULED to BOARDING.</div>
+      </div>
+
+      <div class="teleprompter-drawer">
+        <div class="drawer-header">&#127908; SYNCHRONIZED SPOKEN VOICEOVER SCRIPT (READ ALOUD DURING THIS SLIDE):</div>
+        <div class="drawer-body">Now let's switch personas to the airport terminal. I'll log in as airport ground staff using staff@aerobook.com.<br><br>Notice that our role-based security immediately recognizes ROLE_STAFF and directs us to the airport ground operations dashboard. Here, airport agents have real-time visibility across all flights, passenger manifests, and baggage counters.<br><br>Let's look up our flight AB-101. Here is our passenger, Priya, checked into seat 12A.<br><br>At the departure gate, the agent scans the boarding pass barcode. With one click, the check-in service validates the ticket and marks the passenger as BOARDED.<br><br>The staff member can also update the operational flight status — let's switch flight AB-101 from SCHEDULED to BOARDING. This status immediately propagates across the entire platform in real time.</div>
+      </div>
+    </section>
+    
+    <section class="slide-page">
+      <div class="slide-header-bar">
+        <div>
+          <div class="slide-timing-badge">08:45 - 09:30 | Fleet & Route Management</div>
+          <h2 class="slide-main-title">Live Step 5: Airline Administration & Fleet Control</h2>
+        </div>
+        <div class="slide-category">PART 2: LIVE SYSTEM DEMONSTRATION</div>
+      </div>
+
+      <div class="slide-body-grid">
+        <div class="left-content-panel">
+          <div class="panel-heading">&#128736; ARCHITECTURAL &amp; TECHNICAL HIGHLIGHTS</div>
+          <div class="bullets-container">
+            
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Fleet Inventory</div>
+        <div class="bullet-body">Manage commercial aircraft models (Boeing 737, Airbus A320, Boeing 787) & capacity.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Route & Schedule Engine</div>
+        <div class="bullet-body">Create flights, link aircraft, define departure/arrival hubs, and set base fares.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Campaign Management</div>
+        <div class="bullet-body">Configure promotional discount coupons, percentage caps, and usage quotas.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Credential Directory</div>
+        <div class="bullet-body">Full enterprise user audit, account status verification, and RBAC role promotion.</div>
+      </div>
+    
+          </div>
+        </div>
+        <div class="right-content-panel">
+          <div class="panel-heading">&#9889; CORE RUNTIME DOMAINS</div>
+          
+      <div class="metric-card" style="border-left: 4px solid #8B5CF6;">
+        <div class="metric-title" style="color: #8B5CF6;">Fleet Management</div>
+        <div class="metric-desc">Aircraft registration, manufacturer fleet status, and cabin configurations</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #38BDF8;">
+        <div class="metric-title" style="color: #38BDF8;">Flight Scheduling</div>
+        <div class="metric-desc">Route timing, origin/destination hubs, base fares, and aircraft linkage</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #10B981;">
+        <div class="metric-title" style="color: #10B981;">Promo Campaigns</div>
+        <div class="metric-desc">Coupon rules, usage quotas, discount caps, and campaign date windows</div>
+      </div>
+    
+        </div>
+      </div>
+
+      <div class="bottom-action-bar">
+        <div class="action-bar-label">&#128249; ON-SCREEN LIVE ACTION / VISUAL CUE:</div>
+        <div class="action-bar-text">1. Log out and log in as admin@aerobook.com / Admin@123. &bull; 2. Land on Admin Dashboard (/admin). &bull; 3. Navigate through tabs: Fleet Management (Boeing 737, Airbus A320), Flight Schedules (view/create schedules), Coupons & Campaigns (WELCOME10), and User Management directory.</div>
+      </div>
+
+      <div class="teleprompter-drawer">
+        <div class="drawer-header">&#127908; SYNCHRONIZED SPOKEN VOICEOVER SCRIPT (READ ALOUD DURING THIS SLIDE):</div>
+        <div class="drawer-body">Finally, let's log in as the System Administrator using admin@aerobook.com.<br><br>The Admin Control Center gives airline executives full command over the enterprise:
+- Under Fleet Management, admins configure commercial aircraft, cabin seating layouts, and operational aircraft statuses.
+- Under Flight Schedules, routes, departure/arrival timestamps, aircraft assignments, and base fares can be scheduled dynamically.
+- Under Coupons & Promotions, marketing campaigns and discount codes can be created with usage limits and expiry dates.
+- And under User Management, administrators can audit credentials, verify accounts, and manage role permissions across the entire company.</div>
+      </div>
+    </section>
+    
+    <section class="slide-page">
+      <div class="slide-header-bar">
+        <div>
+          <div class="slide-timing-badge">09:30 - 10:00 | Architecture Summary</div>
+          <h2 class="slide-main-title">Conclusion & Technical Wrap-Up</h2>
+        </div>
+        <div class="slide-category">PART 2: LIVE SYSTEM DEMONSTRATION</div>
+      </div>
+
+      <div class="slide-body-grid">
+        <div class="left-content-panel">
+          <div class="panel-heading">&#128736; ARCHITECTURAL &amp; TECHNICAL HIGHLIGHTS</div>
+          <div class="bullets-container">
+            
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Cloud-Native Microservices</div>
+        <div class="bullet-body">11 Java Spring Boot services communicating via Eureka and Netty API Gateway.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Eventual Consistency</div>
+        <div class="bullet-body">RabbitMQ AMQP messaging guarantees resilient, decoupled async processing.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Zero Overselling</div>
+        <div class="bullet-body">Pessimistic row locking ensures atomic seat inventory checks at scale.</div>
+      </div>
+    
+      <div class="bullet-item">
+        <div class="bullet-head">&#9656; Unified Modern UI</div>
+        <div class="bullet-body">Angular 18 SPA delivers seamless workflows across Passenger, Staff, and Admin roles.</div>
+      </div>
+    
+          </div>
+        </div>
+        <div class="right-content-panel">
+          <div class="panel-heading">&#9889; CORE RUNTIME DOMAINS</div>
+          
+      <div class="metric-card" style="border-left: 4px solid #10B981;">
+        <div class="metric-title" style="color: #10B981;">11 Microservices</div>
+        <div class="metric-desc">100% decoupled Spring Boot backend with Eureka client-side load balancing</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #38BDF8;">
+        <div class="metric-title" style="color: #38BDF8;">8 MySQL DBs</div>
+        <div class="metric-desc">Zero database-level cross-coupling; strict domain boundaries</div>
+      </div>
+    
+      <div class="metric-card" style="border-left: 4px solid #F59E0B;">
+        <div class="metric-title" style="color: #F59E0B;">SonarQube Validated</div>
+        <div class="metric-desc">Enterprise code quality with JaCoCo and LCOV coverage pipelines</div>
+      </div>
+    
+        </div>
+      </div>
+
+      <div class="bottom-action-bar">
+        <div class="action-bar-label">&#128249; ON-SCREEN LIVE ACTION / VISUAL CUE:</div>
+        <div class="action-bar-text">Switch back to the AeroBook Home Screen or show the Eureka Dashboard with all 10 healthy microservices active. Deliver confident, professional closing statement.</div>
+      </div>
+
+      <div class="teleprompter-drawer">
+        <div class="drawer-header">&#127908; SYNCHRONIZED SPOKEN VOICEOVER SCRIPT (READ ALOUD DURING THIS SLIDE):</div>
+        <div class="drawer-body">To summarize: AeroBook demonstrates how modern cloud-native architectures solve real-world aviation challenges:
+- 11 decoupled Spring Boot microservices communicating via Netflix Eureka and Netty API Gateway.
+- Event-driven eventual consistency powered by RabbitMQ.
+- Zero overselling through row-level pessimistic locking.
+- Enterprise security with JWT perimeter validation and BCrypt hashing.
+- And a responsive, accessible Angular 18 frontend catering to Passengers, Staff, and Administrators alike.<br><br>Thank you very much for watching, and I am now open to any questions!</div>
+      </div>
+    </section>
+    
+</body>
+</html>

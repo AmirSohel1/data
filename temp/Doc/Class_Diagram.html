@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AeroBook — Advanced UML Class Diagram</title>
+<style>
+:root{
+  --bg:#080d19;--surface:#101a2b;--surface2:#142238;--line:#31445f;
+  --text:#f2f6fd;--muted:#a6b5cc;--blue:#69aaff;--teal:#42d6c4;
+  --gold:#ffc76b;--green:#7fdfa8;--pink:#ff91a5;--purple:#b7a1ff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% -15%,#172844 0%,var(--bg) 58%);color:var(--text);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+header{max-width:1500px;margin:auto;padding:28px 28px 18px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:11px;letter-spacing:.22em;font-weight:800;color:var(--blue)}
+h1{font-size:clamp(24px,3vw,38px);letter-spacing:-.035em;margin:7px 0 4px}
+.sub{color:var(--muted);max-width:850px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+button,.toggle{font:inherit;color:var(--text);background:#192840;border:1px solid #3b5274;border-radius:9px;padding:9px 13px;cursor:pointer}
+button:hover{background:#243b5c}
+main{max-width:1500px;margin:auto;padding:22px 24px 40px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:0 0 18px}
+.key{display:inline-flex;align-items:center;gap:7px}.swatch{width:9px;height:9px;border-radius:3px;display:inline-block}
+.canvas{overflow:auto;border:1px solid #273852;border-radius:16px;background:rgba(8,13,25,.7);padding:20px;box-shadow:0 18px 50px #0004}
+.diagram{min-width:1120px;display:grid;grid-template-columns:1fr 1.15fr .9fr 1.15fr .95fr .9fr;gap:14px;align-items:start}
+.group{border:1px dashed #344863;border-radius:13px;padding:12px 10px 14px;min-width:0}
+.group h2{font-size:11px;letter-spacing:.09em;margin:0 0 3px;color:var(--accent)}
+.group .service{font-size:10px;color:var(--muted);margin-bottom:12px}
+.klass{background:linear-gradient(145deg,#152238,#101827);border:1px solid color-mix(in srgb,var(--accent),transparent 30%);border-radius:9px;overflow:hidden;margin:0 0 14px;box-shadow:0 6px 15px #0002}
+.klass h3{font-size:13px;margin:0;padding:9px 10px;background:color-mix(in srgb,var(--accent),#101827 83%);border-bottom:1px solid color-mix(in srgb,var(--accent),transparent 65%)}
+.stereo{display:block;color:var(--muted);font-size:10px;font-style:italic;padding:7px 10px 0}
+ul{list-style:none;padding:7px 10px 10px;margin:0}
+li{font:11px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;color:#e2eaf7;overflow-wrap:anywhere}
+li.method{border-top:1px solid #2b3b52;padding-top:7px;margin-top:7px;color:var(--teal)}
+.purple{--accent:var(--purple)}.blue{--accent:var(--blue)}.gold{--accent:var(--gold)}.teal{--accent:var(--teal)}.green{--accent:var(--green)}.pink{--accent:var(--pink)}
+.relationships{margin-top:20px;display:grid;grid-template-columns:1.15fr 1fr;gap:16px}
+.panel{border:1px solid #2b3e59;border-radius:14px;background:var(--surface);padding:17px}
+.panel h2{font-size:15px;margin:0 0 10px}
+.rel-list{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.rel{padding:10px;border-radius:9px;background:var(--surface2);border-left:3px solid var(--accent);font-size:12px}
+.rel b{display:block;margin-bottom:3px}
+.rel small{color:var(--muted)}
+.callout{color:var(--muted);font-size:12px}
+.flow{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.node{border:1px solid #3a5273;border-radius:8px;background:#172740;padding:9px 11px;font-size:11px}
+.arrow{color:var(--teal);font-weight:800}
+.note{margin-top:14px;border-left:3px solid var(--gold);padding:10px 13px;background:#211d18;border-radius:0 8px 8px 0;color:#e9dcc5;font-size:12px}
+@media(max-width:800px){header{padding:22px 16px}main{padding:16px}.relationships{grid-template-columns:1fr}.rel-list{grid-template-columns:1fr}.canvas{padding:12px}}
+@media print{body{background:#080d19!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}header,main{max-width:none}.toolbar{display:none}.canvas{overflow:visible}.diagram{min-width:0;grid-template-columns:repeat(3,1fr)}.group{break-inside:avoid}.relationships{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">AEROBOOK · PLATFORM ENGINEERING</div>
+  <h1>Advanced UML Class Diagram</h1>
+  <div class="sub">Airline reservation, payments, flight inventory and airport operations. Organized by microservice ownership for a cleaner, presentation-ready view.</div>
+  <div class="toolbar">
+    <button onclick="window.print()">Print / Save as PDF</button>
+    <button onclick="document.body.classList.toggle('compact')">Toggle compact view</button>
+  </div>
+</header>
+<main>
+  <div class="legend">
+    <span class="key"><i class="swatch" style="background:var(--purple)"></i>Identity & profile</span>
+    <span class="key"><i class="swatch" style="background:var(--blue)"></i>Flight & fleet</span>
+    <span class="key"><i class="swatch" style="background:var(--gold)"></i>Pricing</span>
+    <span class="key"><i class="swatch" style="background:var(--teal)"></i>Reservation</span>
+    <span class="key"><i class="swatch" style="background:var(--green)"></i>Airport operations</span>
+    <span class="key"><i class="swatch" style="background:var(--pink)"></i>Payment</span>
+  </div>
+  <section class="canvas" aria-label="Scrollable UML class diagram">
+    <div class="diagram">
+      <section class="group purple">
+        <h2>IDENTITY & PROFILE</h2><div class="service">auth-service · user-service</div>
+        <article class="klass"><h3>User</h3><span class="stereo">&lt;&lt;Entity · User Service&gt;&gt;</span><ul>
+          <li>+ userId: Long {PK}</li><li>+ firstName: String</li><li>+ lastName: String</li><li>+ email: String {unique}</li><li>+ phoneNumber: String?</li><li>+ dateOfBirth: Date?</li><li>+ nationality: String?</li><li>+ role: Role</li><li>+ createdAt: DateTime</li><li>+ updatedAt: DateTime?</li>
+        </ul></article>
+        <article class="klass"><h3>IncidentReport</h3><span class="stereo">&lt;&lt;Entity · User Service&gt;&gt;</span><ul>
+          <li>+ id: Long {PK}</li><li>+ userId: Long</li><li>+ userName: String</li><li>+ userEmail: String</li><li>+ reportedBy: String</li><li>+ status: String</li>
+        </ul></article>
+        <article class="klass"><h3>AuthAccount</h3><span class="stereo">&lt;&lt;Conceptual auth model&gt;&gt;</span><ul>
+          <li>+ passwordHash: String</li><li>+ accessToken / refreshToken</li><li>+ otpVerificationState</li><li class="method">+ authenticate()</li><li class="method">+ rotateRefreshToken()</li>
+        </ul></article>
+      </section>
+      <section class="group blue">
+        <h2>FLIGHT & FLEET</h2><div class="service">flight-service</div>
+        <article class="klass"><h3>Aircraft</h3><span class="stereo">&lt;&lt;Entity&gt;&gt;</span><ul>
+          <li>+ id: Long {PK}</li><li>+ aircraftCode: String {unique}</li><li>+ aircraftName: String</li><li>+ manufacturer: String</li><li>+ capacity: Integer</li><li>+ status: FleetStatus</li><li>+ createdAt: DateTime</li><li>+ updatedAt: DateTime?</li>
+        </ul></article>
+        <article class="klass"><h3>Flight</h3><span class="stereo">&lt;&lt;Entity&gt;&gt;</span><ul>
+          <li>+ id: Long {PK}</li><li>+ flightNumber: String {unique}</li><li>+ airlineName: String</li><li>+ source: String</li><li>+ destination: String</li><li>+ departureAt: DateTime</li><li>+ arrivalAt: DateTime</li><li>+ availableSeats: Integer</li><li>+ status: FlightStatus</li><li>+ aircraftId: Long</li>
+          <li class="method">+ searchFlights()</li><li class="method">+ updateStatus()</li>
+        </ul></article>
+      </section>
+      <section class="group gold">
+        <h2>PRICING</h2><div class="service">fare-service</div>
+        <article class="klass"><h3>Fare</h3><span class="stereo">&lt;&lt;Entity&gt;&gt;</span><ul>
+          <li>+ id: Long {PK}</li><li>+ flightId: Long {service ref}</li><li>+ economyFare: Decimal</li><li>+ businessFare: Decimal</li><li>+ firstClassFare: Decimal</li><li>+ taxPercentage: Decimal</li><li>+ discountPercentage: Decimal</li><li>+ effectiveDate: Date</li><li>+ active: Boolean</li><li class="method">+ calculateTotal()</li>
+        </ul></article>
+        <article class="klass"><h3>Coupon</h3><span class="stereo">&lt;&lt;Entity&gt;&gt;</span><ul>
+          <li>+ id: Long {PK}</li><li>+ code: String</li><li>+ discountPercentage: Decimal</li><li>+ minFare: Decimal</li><li>+ maxDiscount: Decimal</li><li>+ usageLimit: Integer</li><li>+ validFrom / validTo: Date</li><li>+ active: Boolean</li><li class="method">+ validateCoupon()</li>
+        </ul></article>
+      </section>
+      <section class="group teal">
+        <h2>RESERVATION</h2><div class="service">booking-service</div>
+        <article class="klass"><h3>Booking</h3><span class="stereo">&lt;&lt;Entity&gt;&gt;</span><ul>
+          <li>+ bookingId: Long {PK}</li><li>+ pnr: String {unique}</li><li>+ userId: Long {service ref}</li><li>+ flightId: Long {service ref}</li><li>+ totalFare: Decimal</li><li>+ status: BookingStatus</li><li>+ bookingDate: DateTime</li>
+          <li class="method">+ generatePNR()</li><li class="method">+ cancelBooking()</li>
+        </ul></article>
+        <article class="klass"><h3>Passenger</h3><span class="stereo">&lt;&lt;Entity · local relationship&gt;&gt;</span><ul>
+          <li>+ passengerId: Long {PK}</li><li>+ bookingId: Long {FK}</li><li>+ firstName: String</li><li>+ lastName: String</li><li>+ gender: String</li><li>+ seatNumber: String?</li>
+        </ul></article>
+      </section>
+      <section class="group green">
+        <h2>AIRPORT OPS</h2><div class="service">check-in-service</div>
+        <article class="klass"><h3>CheckIn</h3><span class="stereo">&lt;&lt;Entity&gt;&gt;</span><ul>
+          <li>+ id: Long {PK}</li><li>+ bookingId: Long {service ref}</li><li>+ passengerName: String</li><li>+ seatNumber: String</li><li>+ boardingPassNumber: String {unique}</li><li>+ status: CheckInStatus</li><li>+ checkedInAt: DateTime</li>
+          <li class="method">+ checkInPassenger()</li><li class="method">+ markBoarded()</li>
+        </ul></article>
+      </section>
+      <section class="group pink">
+        <h2>PAYMENTS</h2><div class="service">payment-service</div>
+        <article class="klass"><h3>Payment</h3><span class="stereo">&lt;&lt;Entity&gt;&gt;</span><ul>
+          <li>+ id: Long {PK}</li><li>+ bookingId: Long {service ref}</li><li>+ pnr: String?</li><li>+ orderId: String {unique}</li><li>+ paymentId: String?</li><li>+ amount: Double</li><li>+ amountInPaise: Long</li><li>+ currency: String</li><li>+ status: PaymentStatus</li><li>+ signature: String?</li><li>+ refundId: String?</li><li>+ refundAmount: Double?</li>
+          <li class="method">+ verifySignature()</li><li class="method">+ refundPayment()</li>
+        </ul></article>
+      </section>
+    </div>
+  </section>
+  <section class="relationships">
+    <article class="panel">
+      <h2>Relationship map</h2>
+      <div class="rel-list">
+        <div class="rel" style="--accent:var(--blue)"><b>Aircraft → Flight</b><small>One aircraft may be assigned to multiple flight schedules.</small></div>
+        <div class="rel" style="--accent:var(--teal)"><b>Booking → Passenger</b><small>One booking contains one or more passenger records; local FK on Passenger.</small></div>
+        <div class="rel" style="--accent:var(--purple)"><b>User → Booking</b><small>Linked by userId across service boundary; not a database FK.</small></div>
+        <div class="rel" style="--accent:var(--gold)"><b>Flight ↔ Fare</b><small>Fare references flightId; the documented fare schema marks it unique.</small></div>
+        <div class="rel" style="--accent:var(--green)"><b>Booking → CheckIn</b><small>Check-in keeps a bookingId reference in its own database.</small></div>
+        <div class="rel" style="--accent:var(--pink)"><b>Booking → Payment</b><small>Payment stores bookingId and optional PNR for reconciliation.</small></div>
+      </div>
+    </article>
+    <article class="panel">
+      <h2>Reservation collaboration</h2>
+      <div class="flow">
+        <span class="node">Booking Service</span><span class="arrow">→</span><span class="node">Flight Service</span>
+        <span class="arrow">→</span><span class="node">Fare Service</span><span class="arrow">→</span><span class="node">Payment</span>
+      </div>
+      <p class="callout">Synchronous REST / OpenFeign is used where the booking flow needs immediate validation or pricing responses.</p>
+      <div class="flow">
+        <span class="node">Booking created</span><span class="arrow">→ RabbitMQ →</span><span class="node">Flight / notification consumers</span>
+      </div>
+      <p class="callout">Asynchronous events decouple follow-up work from the passenger-facing request.</p>
+      <div class="note">Database-per-service rule: dashed logical relationships across service boundaries are API/event references, not relational foreign keys. AuthAccount is a conceptual summary of authentication responsibilities because the documentation describes the service behavior rather than a full auth entity schema.</div>
+    </article>
+  </section>
+</main>
+<style>
+body.compact .klass ul{padding-top:4px;padding-bottom:5px}
+body.compact li{line-height:1.3;font-size:10px}
+body.compact .klass{margin-bottom:8px}
+</style>
+</body>
+</html>
